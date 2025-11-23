@@ -1,0 +1,59 @@
+<section class="container">
+  <!-- Page Title -->
+  <h1 class="page-title">
+    Smart Student TimeSheet
+  </h1>
+
+  <!-- Student ID Form -->
+  <form (ngSubmit)="go()" class="student-form">
+    <label class="form-label">
+      <span class="label-text">Student ID</span>
+      <input
+        type="text"
+        [(ngModel)]="id"
+        name="id"
+        required
+        placeholder="Enter Student ID"
+        class="form-input"
+      />
+    </label>
+    <button type="submit" class="form-button">
+      View Timetable
+    </button>
+  </form>
+
+  <!-- Error Message -->
+  <p *ngIf="studentService.error()" class="error-message">
+    {{ studentService.error() }}
+  </p>
+
+  <!-- Students Section -->
+  <h2 class="section-title">All Students</h2>
+
+  <!-- Students Table -->
+  <div class="table-wrapper">
+    <table class="students-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Classes Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let s of studentService.students(); trackBy: trackById"
+          class="table-row"
+        >
+          <td>
+            <a [routerLink]="['/timetable', s.id]" class="link">
+              {{ s.id }}
+            </a>
+          </td>
+          <td>{{ s.name }}</td>
+          <td>{{ s.classes.length || 0 }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

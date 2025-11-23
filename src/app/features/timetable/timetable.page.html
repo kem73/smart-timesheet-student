@@ -1,0 +1,40 @@
+<section *ngIf="studentService.student(); let student" class="student-card">
+  <h2 class="student-title">{{ student.name }} ({{ student.id }})</h2>
+
+  <div class="table-container">
+    <table class="classes-table">
+      <thead>
+        <tr>
+          <th>Course</th>
+          <th>Day</th>
+          <th>Time</th>
+          <th>Room</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="let c of student.classes; trackBy: trackByCourse"
+          [class.current]="isCurrent(c)"
+          [class.next]="!isCurrent(c) && isNext(c)"
+          class="table-row"
+        >
+          <td>{{ c.course }}</td>
+          <td>{{ c.day }}</td>
+          <td>{{ c.start | timeRange:c.end }}</td>
+          <td>{{ c.room }}</td>
+          <td class="status">
+            <span *ngIf="isCurrent(c)">Now</span>
+            <span *ngIf="!isCurrent(c) && isNext(c)">Next</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- Loading/Error States -->
+<div *ngIf="!studentService.student()" class="loading-error">
+  <p *ngIf="studentService.loading()" class="loading-text">Loading timetable…</p>
+  <p *ngIf="studentService.error()" class="error-text">{{ studentService.error() }}</p>
+</div>
